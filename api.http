@@ -1,0 +1,9 @@
+### Recuperar todas los usuarios
+GET http://localhost:1234/multitask
+
+### Recuperar un usuario por email
+GET http://localhost:1234/multitask/juan@example.com
+
+### obtener un código para iniciar sesión
+
+GET http://localhost:1234/multitask/generate-code/3shyworks@gmail.com
