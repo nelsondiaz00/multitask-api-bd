@@ -18,6 +18,16 @@ export class model {
     )
     return users
   }
+  static async getAllEmployees () {
+    const [employees] = await connection.query(
+        `SELECT u.idUsuario, p.nombre, p.apellidos, p.cedula, p.direccion
+          FROM PERSONAS p
+          JOIN USUARIOS u ON u.idUsuario = p.USUARIOS_idUsuario
+          WHERE u.tipoUsuario = 'empleado';`
+    )
+    return employees
+  }
+  
 
   static async getByEmail ({ email }) {
     if (email) {
@@ -54,6 +64,23 @@ export class model {
       throw new Error('Invalid EMAIL')
     }
   }
+  
+  static async getServicesBySector ({ sector }) {
+    if (sector) {
+      const [services] = await connection.query(
+        `SELECT * FROM PROFESIONES
+        WHERE sector = '${sector}';`
+      )
+      if (services.length === 0) {
+        return null
+      }
+
+      return services;
+    } else {
+      throw new Error('Invalid SECTOR')
+    }
+  }
+
   static async createPersonUser(input) {
     const {
         nombre,
@@ -62,13 +89,14 @@ export class model {
         correo,
         direccion,
         telefono,
-        nUsuario
+        nUsuario,
+        tipoUsuario
     } = input;
-
+    console.log(tipoUsuario)
     try {
         // Insertar en la tabla USUARIOS
         await connection.query(
-            `INSERT INTO USUARIOS (password, nUsuario, tipoUsuario) VALUES (?, ?, 'Empleado')`,
+            `INSERT INTO USUARIOS (password, nUsuario, tipoUsuario) VALUES (?, ?, '${tipoUsuario}')`,
             ['123', nUsuario]
         );
 
@@ -96,17 +124,55 @@ export class model {
         console.error('Error al crear persona y usuario:', error);
         throw new Error('Error creating persona and usuario');
     }
-}
-
-
-
-
-
-  static async delete ({ id }) {
-
   }
 
-  static async update ({ id, input }) {
 
+
+  static async updatePersonUser(inputData) {
+    const {
+        nombre,
+        apellidos,
+        cedula,
+        correo,
+        direccion,
+        telefono,
+        USUARIOS_idUsuario,
+        nUsuario
+    } = inputData;
+
+    try {
+        await connection.query(
+            `UPDATE PERSONAS p
+            JOIN USUARIOS u ON p.USUARIOS_idUsuario = u.idUsuario
+            SET p.nombre = '${nombre}',
+                p.apellidos = '${apellidos}',
+                p.correo = '${correo}',
+                p.direccion = '${direccion}',
+                p.telefono = '${telefono}'
+            WHERE u.nUsuario = '${nUsuario}';`
+        );
+        // terminar después
+        /*await connection.query(
+            `UPDATE USUARIOS
+            SET nUsuario = '${nUsuario}'
+            WHERE idUsuario = ${USUARIOS_idUsuario};`
+        );*/
+
+        const updatedPerson = await connection.query(
+          `SELECT p.*, u.nUsuario FROM PERSONAS p
+          JOIN USUARIOS u ON p.USUARIOS_idUsuario = u.idUsuario
+          WHERE u.nUsuario = '${nUsuario}';`
+        );
+
+        if (updatedPerson.length === 0) {
+            throw new Error('No se encontró la persona actualizada');
+        }
+        console.log(updatedPerson[0][0])
+        return updatedPerson[0][0]; // Devuelve la primera fila de resultados
+    } catch (error) {
+        console.error('Error al actualizar persona y usuario:', error);
+        throw new Error('Error al actualizar persona y usuario');
+    }
   }
+
 }

@@ -24,5 +24,30 @@ Content-Type: application/json
   "correo": "juan@example.com",
   "direccion": "Calle 123",
   "telefono": "987654321",
-  "nUsuario": "jua2456"
+  "nUsuario": "jua2456",
+  "tipoUsuario": "admin"
 }
+
+### Modificar personas
+
+PUT http://localhost:1234/multitask/person/admin01
+Content-Type: application/json
+
+{
+  "nombre": "xd",
+  "apellidos": "a",
+  "correo": "3shyworks@gmail.com",
+  "direccion": "Calle 123",
+  "telefono": "987654321",
+  "nUsuario": "admin01"
+
+}
+
+### OBTENER TODOS LOS EMPLEADOS
+
+GET http://localhost:1234/multitask/employee
+
+
+### OBTENER SERVICIOS SEGÚN SECTOR
+
+GET http://localhost:1234/multitask/service/Metales

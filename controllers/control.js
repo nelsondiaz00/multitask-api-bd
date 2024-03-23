@@ -8,6 +8,11 @@ export class MultiTaskController {
     res.json(users)
   }
 
+  static async getAllEmployees (req, res) {
+    const users = await model.getAllEmployees()
+    res.json(users)
+  }
+
   static async getByEmail (req, res) {
     const { email } = req.params
     const user = await model.getByEmail({ email })
@@ -32,6 +37,14 @@ export class MultiTaskController {
     res.status(404).json({ message: 'User not found' })
   }
 
+  static async getServicesBySector (req, res) {
+    const { sector } = req.params
+    const services = await model.getServicesBySector({ sector })
+    if (services) return res.json(services)
+    res.status(404).json({ message: 'User not found' })
+  }
+  
+
   static async createPersonUser(req, res) {
     const input = req.body; 
     console.log(input);
@@ -43,8 +56,20 @@ export class MultiTaskController {
         console.error('Error al crear persona y usuario:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
+  }
+  
+
+  static async modifyPersonUser(req, res) {
+    const inputData = req.body; // Obtener los datos enviados en la solicitud
+
+    try {
+        const updatedData = await model.updatePersonUser(inputData);
+        res.json(updatedData);
+
+    } catch (error) {
+        console.error('Error al modificar persona y usuario:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
 }
-
-
 
 }
