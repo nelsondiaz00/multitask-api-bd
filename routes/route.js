@@ -10,3 +10,6 @@ router.get('/:email', MultiTaskController.getByEmail)
 
 router.get('/generate-code/:email', MultiTaskController.generateCode)
 
+router.get('/person/:email', MultiTaskController.getPersonByEmail)
+
+router.post('/person', MultiTaskController.createPersonUser)

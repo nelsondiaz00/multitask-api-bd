@@ -2,8 +2,27 @@
 GET http://localhost:1234/multitask
 
 ### Recuperar un usuario por email
-GET http://localhost:1234/multitask/juan@example.com
+GET http://localhost:1234/multitask/3shyworks@gmail.com
 
 ### obtener un código para iniciar sesión
 
 GET http://localhost:1234/multitask/generate-code/3shyworks@gmail.com
+
+### obtener persona por email
+
+GET http://localhost:1234/multitask/person/3shyworks@gmail.com
+
+### Crear persona y usuario
+
+POST http://localhost:1234/multitask/person
+Content-Type: application/json
+
+{
+  "nombre": "xd",
+  "apellidos": "a",
+  "cedula": "1234",
+  "correo": "juan@example.com",
+  "direccion": "Calle 123",
+  "telefono": "987654321",
+  "nUsuario": "jua2456"
+}
