@@ -2,7 +2,8 @@
 GET http://localhost:1234/multitask
 
 ### Recuperar un usuario por email
-GET http://localhost:1234/multitask/3shyworks@gmail.com
+GET http://localhost:1234/multitask/juan@example.com
+
 
 ### obtener un código para iniciar sesión
 
@@ -10,7 +11,7 @@ GET http://localhost:1234/multitask/generate-code/3shyworks@gmail.com
 
 ### obtener persona por email
 
-GET http://localhost:1234/multitask/person/3shyworks@gmail.com
+GET http://localhost:1234/multitask/person/3shyworki@gmail.com
 
 ### Crear persona y usuario
 
@@ -20,26 +21,31 @@ Content-Type: application/json
 {
   "nombre": "xd",
   "apellidos": "a",
+  "tipo_documento": "C.C",
   "cedula": "1234",
   "correo": "juan@example.com",
   "direccion": "Calle 123",
   "telefono": "987654321",
+  "fecha_nacimiento": "1990-01-01",
+  "genero": "Masculino",
+  "password": "123",
   "nUsuario": "jua2456",
-  "tipoUsuario": "admin"
+  "tipoUsuario": "Administrador"
 }
+
 
 ### Modificar personas
 
-PUT http://localhost:1234/multitask/person/admin01
+PUT http://localhost:1234/multitask/person/3shyworki@gmail.com
 Content-Type: application/json
 
 {
-  "nombre": "xd",
+  "nombre": "ASA",
   "apellidos": "a",
-  "correo": "3shyworks@gmail.com",
   "direccion": "Calle 123",
-  "telefono": "987654321",
-  "nUsuario": "admin01"
+  "correo": "3shyworki@gmail.com",
+  "password": "1234",
+  "telefono": "987654321"
 
 }
 

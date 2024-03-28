@@ -18,5 +18,5 @@ router.get('/service/:sector', MultiTaskController.getServicesBySector)
 // crear persona junto a su usuario
 router.post('/person', MultiTaskController.createPersonUser)
 // modificar persona y usuario
-router.put('/person/:user', MultiTaskController.modifyPersonUser)
+router.put('/person/:email', MultiTaskController.modifyPersonUser)
 

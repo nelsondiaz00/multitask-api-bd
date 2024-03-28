@@ -32,11 +32,27 @@ export class model {
   static async getByEmail ({ email }) {
     if (email) {
       const [user] = await connection.query(
-        `SELECT u.idUsuario, u.password, nUsuario, tipoUsuario
-        FROM USUARIOS u
-        JOIN PERSONAS p ON p.USUARIOS_idUsuario =  u.idUsuario
-        WHERE p.correo = '${email}';`
-      )
+        `SELECT 
+        PER.nombre, 
+        PER.apellidos, 
+        PER.tipo_documento, 
+        PER.cedula, 
+        PER.correo, 
+        PER.direccion, 
+        PER.telefono, 
+        PER.fecha_nacimiento, 
+        PER.genero, 
+        USU.tipoUsuario,
+        USU.nUsuario, 
+        USU.password
+        FROM 
+            PERSONAS AS PER
+        INNER JOIN 
+            USUARIOS AS USU ON PER.USUARIOS_idUsuario = USU.idUsuario
+        WHERE 
+            PER.correo = '${email}';
+        ;`);
+      
       if (user.length === 0) {
         return null
       }
@@ -85,19 +101,23 @@ export class model {
     const {
         nombre,
         apellidos,
+        tipo_documento,
         cedula,
         correo,
         direccion,
         telefono,
+        fecha_nacimiento,
+        genero,
+        password,
         nUsuario,
         tipoUsuario
     } = input;
-    console.log(tipoUsuario)
+
     try {
         // Insertar en la tabla USUARIOS
         await connection.query(
             `INSERT INTO USUARIOS (password, nUsuario, tipoUsuario) VALUES (?, ?, '${tipoUsuario}')`,
-            ['123', nUsuario]
+            [password, nUsuario]
         );
 
         // Obtener el ID del usuario insertado
@@ -107,14 +127,14 @@ export class model {
 
         // Insertar en la tabla PERSONAS
         await connection.query(
-            `INSERT INTO PERSONAS (nombre, apellidos, cedula, correo, direccion, telefono, USUARIOS_idUsuario) 
-             VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            [nombre, apellidos, cedula, correo, direccion, telefono, usuarioId]
+            `INSERT INTO PERSONAS (nombre, apellidos, tipo_documento, cedula, correo, direccion, telefono, fecha_nacimiento, genero, USUARIOS_idUsuario) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [nombre, apellidos, tipo_documento, cedula, correo, direccion, telefono, fecha_nacimiento, genero, usuarioId]
         );
 
         // Obtener los datos de la persona recién insertada
         const [personaResult] = await connection.query(
-            `SELECT nombre, apellidos, cedula, correo, direccion, telefono, USUARIOS_idUsuario 
+            `SELECT nombre, apellidos, tipo_documento, cedula, correo, direccion, telefono, fecha_nacimiento, genero, USUARIOS_idUsuario 
              FROM PERSONAS WHERE cedula = ?`,
             [cedula]
         );
@@ -124,20 +144,19 @@ export class model {
         console.error('Error al crear persona y usuario:', error);
         throw new Error('Error creating persona and usuario');
     }
-  }
-
+}
 
 
   static async updatePersonUser(inputData) {
+    console.log(inputData)
     const {
         nombre,
         apellidos,
-        cedula,
-        correo,
-        direccion,
+        nUsuario,
+        password,
         telefono,
-        USUARIOS_idUsuario,
-        nUsuario
+        direccion,
+        correo
     } = inputData;
 
     try {
@@ -146,10 +165,11 @@ export class model {
             JOIN USUARIOS u ON p.USUARIOS_idUsuario = u.idUsuario
             SET p.nombre = '${nombre}',
                 p.apellidos = '${apellidos}',
-                p.correo = '${correo}',
                 p.direccion = '${direccion}',
-                p.telefono = '${telefono}'
-            WHERE u.nUsuario = '${nUsuario}';`
+                p.telefono = '${telefono}',
+                u.nUsuario = '${nUsuario}' ,
+                u.password = '${password}'
+            WHERE p.correo = '${correo}';`
         );
         // terminar después
         /*await connection.query(
@@ -159,14 +179,33 @@ export class model {
         );*/
 
         const updatedPerson = await connection.query(
-          `SELECT p.*, u.nUsuario FROM PERSONAS p
-          JOIN USUARIOS u ON p.USUARIOS_idUsuario = u.idUsuario
-          WHERE u.nUsuario = '${nUsuario}';`
+          `SELECT 
+            PER.nombre, 
+            PER.apellidos, 
+            PER.tipo_documento, 
+            PER.cedula, 
+            PER.correo, 
+            PER.direccion, 
+            PER.telefono, 
+            PER.fecha_nacimiento, 
+            PER.genero, 
+            USU.tipoUsuario,
+            USU.nUsuario, 
+            USU.password
+            FROM 
+                PERSONAS AS PER
+            INNER JOIN 
+                USUARIOS AS USU ON PER.USUARIOS_idUsuario = USU.idUsuario
+            WHERE 
+                PER.correo = '${correo}';
+            ;`
         );
+      
 
         if (updatedPerson.length === 0) {
             throw new Error('No se encontró la persona actualizada');
         }
+
         console.log(updatedPerson[0][0])
         return updatedPerson[0][0]; // Devuelve la primera fila de resultados
     } catch (error) {
