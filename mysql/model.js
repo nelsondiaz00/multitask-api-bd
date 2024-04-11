@@ -20,7 +20,7 @@ export class model {
   }
   static async getAllEmployees () {
     const [employees] = await connection.query(
-        `SELECT u.idUsuario, p.nombre, p.apellidos, p.cedula, p.direccion
+        `SELECT u.idUsuario, p.nombre, p.apellidos, p.cedula, p.direccion, u.activo, u.belonging
           FROM PERSONAS p
           JOIN USUARIOS u ON u.idUsuario = p.USUARIOS_idUsuario
           WHERE u.tipoUsuario = 'empleado';`
@@ -146,7 +146,59 @@ export class model {
     }
 }
 
+static async deleteUser(inputData){
+  const {
+    idUser
+  } = inputData;
 
+  if (inputData) {
+    console.log("idUser")
+    console.log(inputData)
+    await connection.query(
+      `UPDATE USUARIOS
+      SET belonging = FALSE
+      WHERE idUsuario = '${idUser}';`
+    )
+
+    const [personDeleted] = await connection.query(
+      `SELECT * FROM USUARIOS
+      WHERE idUsuario = '${idUser}';`
+    )
+
+    return personDeleted;
+  } else {
+    throw new Error('Invalid SECTOR')
+  }
+
+}
+
+
+
+static async getEmployeeByID(inputData){
+  if (inputData) {
+    console.log("idUser")
+    const [employee] = await connection.query(
+      `SELECT 
+      PERSONAS.nombre, 
+      PERSONAS.apellidos, 
+      PERSONAS.telefono, 
+      PERSONAS.direccion, 
+      PERSONAS.correo, 
+      USUARIOS.nUsuario, 
+      USUARIOS.password
+      FROM 
+        PERSONAS
+      JOIN 
+      USUARIOS ON PERSONAS.idPersona = USUARIOS.idUsuario
+    WHERE USUARIOS.idUsuario = '${inputData}';`
+    )
+
+    return employee[0];
+  } else {
+    throw new Error('Invalid SECTOR')
+  }
+
+}
   static async updatePersonUser(inputData) {
     console.log(inputData)
     const {

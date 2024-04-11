@@ -70,6 +70,33 @@ export class MultiTaskController {
         console.error('Error al modificar persona y usuario:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
-}
+  }
 
+static async deleteUser(req, res) {
+    const inputData = req.body; 
+
+    try {
+        const updatedData = await model.deleteUser(inputData);
+        res.json(updatedData);
+
+    } catch (error) {
+        console.error('Error al eliminar persona:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+  }
+
+  static async getEmployeeByID(req, res) {
+    const inputData = req.body; 
+  
+    try {
+        const { id } = req.params
+        console.log(id)
+        const updatedData = await model.getEmployeeByID(id);
+        res.json(updatedData);
+  
+    } catch (error) {
+        console.error('Error al obtener empleado por ID:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+  }
 }

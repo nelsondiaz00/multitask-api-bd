@@ -19,4 +19,8 @@ router.get('/service/:sector', MultiTaskController.getServicesBySector)
 router.post('/person', MultiTaskController.createPersonUser)
 // modificar persona y usuario
 router.put('/person/:email', MultiTaskController.modifyPersonUser)
+// eliminar usuario
+router.put('/employee/delete/:idUser', MultiTaskController.deleteUser)
+// obtener datos por id
+router.get('/employee/:id', MultiTaskController.getEmployeeByID)
 
