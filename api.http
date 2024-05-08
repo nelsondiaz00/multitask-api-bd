@@ -19,18 +19,18 @@ POST http://localhost:1234/multitask/person
 Content-Type: application/json
 
 {
-  "nombre": "xd",
-  "apellidos": "a",
-  "tipo_documento": "C.C",
-  "cedula": "1234",
-  "correo": "juan@example.com",
-  "direccion": "Calle 123",
-  "telefono": "987654321",
-  "fecha_nacimiento": "1990-01-01",
-  "genero": "Masculino",
-  "password": "123",
-  "nUsuario": "jua2456",
-  "tipoUsuario": "Administrador"
+"nombre": "xd",
+"apellidos": "a",
+"tipo_documento": "C.C",
+"cedula": "1234",
+"correo": "juan@example.com",
+"direccion": "Calle 123",
+"telefono": "987654321",
+"fecha_nacimiento": "1990-01-01",
+"genero": "Masculino",
+"password": "123",
+"nUsuario": "jua2456",
+"tipoUsuario": "Administrador"
 }
 
 
@@ -40,12 +40,12 @@ PUT http://localhost:1234/multitask/person/3shyworki@gmail.com
 Content-Type: application/json
 
 {
-  "nombre": "ASA",
-  "apellidos": "a",
-  "direccion": "Calle 123",
-  "correo": "3shyworki@gmail.com",
-  "password": "1234",
-  "telefono": "987654321"
+"nombre": "ASA",
+"apellidos": "a",
+"direccion": "Calle 123",
+"correo": "3shyworki@gmail.com",
+"password": "1234",
+"telefono": "987654321"
 
 }
 
@@ -56,16 +56,132 @@ GET http://localhost:1234/multitask/employee
 
 ### OBTENER SERVICIOS SEGÚN SECTOR
 
-GET http://localhost:1234/multitask/service/Metales
+GET http://localhost:1234/multitask/service/sector/Metales
 
 ### DELETE USER POR ID
 PUT http://localhost:1234/multitask/employee/delete/2
 Content-Type: application/json
 
 {
-  "idUser": "2"
-  
+"idUser": "2"
+
+}
+
+
+
+
+###  POST POSTULATION OF COMPANIE
+POST http://localhost:1234/multitask/companie/postulation
+Content-Type: application/json
+
+{
+"servicio_nombre" : "NUEVILLA ",
+"descripcion_Empleo": "Desarrollador de software",
+"especificacion_Empleo": "Experiencia en desarrollo web",
+"horario": "HORARIO",
+"fecha_Inicio": "2024-04-15",
+"fecha_Final": "2024-10-15",
+"posibilidad_Viaje": true,
+"disponibilidad_oferta": true,
+"salario_Oferta": 5000000,
+"tipo_Contrato": 1,
+"cantidadRequerida": 3,
+"EMPRESAS_idEmpresa": 1,
+"PROFESIONES_idProfesion": 1,
+"POSTULADOS_idPostulado": null
 }
 
 ###  GET EMPLOYEE BY ID 
 GET http://localhost:1234/multitask/employee/2
+
+### Obtener pre-factura
+GET http://localhost:1234/multitask/billing/pre-bill/tecnico/15
+
+### Registrar metodo de pago
+
+POST http://localhost:1234/multitask/person/pay-method
+Content-Type: application/json
+
+{
+"tipo": "Credito",
+"numero_tarjeta": "2121212112",
+"nombre_tarjeta": "NELSON MOLINA",
+"fecha_vencimiento": "2024-04-15",
+"codigo_seguridad": "221",
+"USUARIOS_idUsuario": 3
+}
+
+### OBTENER METODOS DE PAGO POR EMAIL
+GET http://localhost:1234/multitask/person/pay-method/correo_empresa@example.com
+
+### GENERAR FACTURA
+
+POST http://localhost:1234/multitask/billing/bill
+Content-Type: application/json
+
+{
+"cantidad_Entrevistas" : "14",
+"total" : 211221,
+"subtotal" : 21912012,
+"EMPRESAS_idEmpresa" : 1,
+"METODO_PAGO_id" : 1,
+"idOferta_Trabajo" : 1
+}
+
+### OBTENER EMPRESA POR CORREO
+
+GET http://localhost:1234/multitask/companie/correo_empresa@example.com
+
+
+### ACTUALIZAR EMPRESA
+
+
+PUT http://localhost:1234/multitask/companie/correo_empresa@example.com
+Content-Type: application/json
+
+{
+"nombre_Empresa": "SISISISIS",
+"telefono": "1111",
+"direccion": "Calle 123",
+"password": "1234",
+"descripcion": "dessss"
+}
+### OBTENER POSTULACIONES POR CORREO DE EMPRESA
+GET http://localhost:1234/multitask/companie/postulation/correo_empresa@example.com
+### CAMBIAR ESTADO DE PSOTULACION
+
+PUT http://localhost:1234/multitask/companie/postulation/1
+
+### obtener servicios
+GET http://localhost:1234/multitask/service/all
+
+### obtener SERVICIOS POR PROFESION
+GET http://localhost:1234/multitask/service/profession/1
+
+### postular postulación
+POST http://localhost:1234/multitask/aspirant/postulation
+Content-Type: application/json
+
+{
+"idOferta_Trabajo": 1,
+"POSTULADOS_idPostulado": 1,
+"fasePostulacion": 1
+}
+
+### OBTENER POSTULADO POR EMAIL
+GET http://localhost:1234/multitask/aspirant/postulado01@example.com
+
+
+### CONFIRMAR POSTULACION
+GET http://localhost:1234/multitask/aspirant/postulation/confirm/1/1
+
+### obtener usuarios empresa
+
+GET http://localhost:1234/multitask/all/companie
+
+### obtener usuarios aspirantes
+
+GET http://localhost:1234/multitask/all/aspirant
+
+### OBTENER ENTREVISTAS
+GET http://localhost:1234/multitask/all/interview
